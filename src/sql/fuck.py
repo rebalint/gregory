@@ -24,13 +24,14 @@ class sql_class():
             *Updates record if one is found
             *Creates a record if nots
         '''
+        # move update into a try command and have it run the command in a try
         #checks if a record exists
         sql = 'SELECT fuck_count FROM fuck_leaderboard WHERE user_id = %s and guild_id = %s'
 
         self.conn.ping(reconnect=True)
         self.cursor.execute(sql, user_id, guild_id)
         data = self.cursor.fetchall()
-        if data:
+        if data: 
             #updates the record if one is found
             fuck_count = data[0][0]
             sql = 'UPDATE fuck_leaderboard SET fuck_count = %s WHERE user_id = %s and guild_id = %s'
@@ -38,7 +39,7 @@ class sql_class():
             self.conn.ping(reconnect=True)
             self.cursor.execute(sql, fuck_count, user_id, guild_id)
             data = self.cursor.fetchall()
-        else:
+        else: # move insert into a try command and have it run the command in a try
             #creates a record if no record is found
             sql = 'INSERT INTO fuck_leaderboard VALUES (%s, %s, %s)'
 
