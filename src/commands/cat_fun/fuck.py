@@ -7,12 +7,13 @@ from sql.jokes import sql_class
 allowedChannels = [588354715625193473, 579538738988711958]
 
 
-class jokes(commands.Cog, name='memery bullshit'):
+class fuck(commands.Cog, name='fuck'):
     """
     Gregory is a dank memer :sunglasses:
     """
     def __init__(self, client):
         self.client = client
+        # needs special ritz line
 
     @commands.Cog.listener()
     async def on_message(self, message):
@@ -23,9 +24,9 @@ class jokes(commands.Cog, name='memery bullshit'):
         if "fuck" in message.content.lower():
             fBombs = message.content.lower().count("fuck")
 
-            sql = sql_class()
+            sql = sql_class()# move sql it into init
 
-            local_guild = message.guild
+            local_guild = message.guild #turn date that enters DB into strs
             sql.update_fuck_leaderboard(message.author.id, local_guild.id)
             
             if message.channel.id in allowedChannels:
@@ -78,11 +79,5 @@ class jokes(commands.Cog, name='memery bullshit'):
             ctx.channel.send(f"Wow, {user.name} has dropped **{fuckCount}** f-bombs on the server!")
 
 
-
-
-
-
-
-
 def setup(client):
-    client.add_cog(jokes(client))
+    client.add_cog(fuck(client))
