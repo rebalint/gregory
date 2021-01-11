@@ -18,11 +18,11 @@ class sql_class():
 
 #######################################
 
-    def update_fuck_leaderboard(self, user_id, guild_id):
+    def update_fuck_leaderboard(self, user_id, guild_id, new_fucks):
         '''
         Checks if user has a record in specified server then:
             *Updates record if one is found
-            *Creates a record if nots
+            *Creates a record if not
         '''
         # move update into a try command and have it run the command in a try
         #checks if a record exists
@@ -37,15 +37,19 @@ class sql_class():
             sql = 'UPDATE fuck_leaderboard SET fuck_count = %s WHERE user_id = %s and guild_id = %s'
 
             self.conn.ping(reconnect=True)
-            self.cursor.execute(sql, fuck_count, user_id, guild_id)
-            data = self.cursor.fetchall()
-        else: # move insert into a try command and have it run the command in a try
+            self.cursor.execute(sql, fuck_count + new_fucks, user_id, guild_id)
+            self.cursor.fetchall()
+        else:
             #creates a record if no record is found
             sql = 'INSERT INTO fuck_leaderboard VALUES (%s, %s, %s)'
 
-            self.conn.ping(reconnect=True)
-            self.cursor.execute(sql, user_id, guild_id, 1)
-            data = self.cursor.fetchall()
+            try:
+                self.conn.ping(reconnect=True)
+                self.cursor.execute(sql, user_id, guild_id, new_fucks)
+                self.cursor.commit()
+            except  Exception as exc:
+                self.conn.rollback()
+                print(str(exc))
 
 #######################################
 

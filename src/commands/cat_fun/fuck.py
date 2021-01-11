@@ -1,7 +1,5 @@
 import discord
-import random
 from discord.ext import commands
-from random import randint
 from sql.jokes import sql_class
 
 allowedChannels = [588354715625193473, 579538738988711958]
@@ -9,11 +7,14 @@ allowedChannels = [588354715625193473, 579538738988711958]
 
 class fuck(commands.Cog, name='fuck'):
     """
-    Gregory is a dank memer :sunglasses:
+    fuck
     """
     def __init__(self, client):
         self.client = client
         # needs special ritz line
+        #this? \/
+        self.category = pathlib.Path(__file__).parent.absolute().name[4:]
+        self.sql = sql_class()
 
     @commands.Cog.listener()
     async def on_message(self, message):
@@ -24,10 +25,8 @@ class fuck(commands.Cog, name='fuck'):
         if "fuck" in message.content.lower():
             fBombs = message.content.lower().count("fuck")
 
-            sql = sql_class()# move sql it into init
-
-            local_guild = message.guild #turn date that enters DB into strs
-            sql.update_fuck_leaderboard(message.author.id, local_guild.id)
+            local_guild = message.guild
+            self.sql.update_fuck_leaderboard(str(message.author.id), str(local_guild.id), fBombs)
             
             if message.channel.id in allowedChannels:
                 if fBombs == 1:
@@ -41,12 +40,11 @@ class fuck(commands.Cog, name='fuck'):
         """
         Gets the leaderboard of fuck
         """ 
-        sql = sql_class()
 
         local_guild = ctx.guild
         guild_name = local_guild.name
         
-        leaderboard = sql.get_fuck_leaderboard(local_guild.id, 0, 10)
+        leaderboard = self.sql.get_fuck_leaderboard(str(local_guild.id), 0, 10)
 
         msg = f'__F-bomb Leaderboard for **{guild_name}**:__'
         for record in leaderboard:
@@ -69,7 +67,7 @@ class fuck(commands.Cog, name='fuck'):
         user_ID = user.id
         guild_ID = local_guild.id
 
-        fuckCount = sql.get_user_fuck(user_ID, guild_ID)[0]
+        fuckCount = sql.get_user_fuck(str(user_ID), str(guild_ID))[0]
 
         if fuckCount == 0:
             ctx.channel.send(f"Wow, {user.name} has **never** said the f-word! :sunglasses:")

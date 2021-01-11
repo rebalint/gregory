@@ -1,12 +1,11 @@
 import pathlib
 
 from discord.ext import commands
-allowedChannels = [588354715625193473, 579538738988711958]
 
 
-class fun(commands.Cog, name='fun'):
+class uwu(commands.Cog, name='fun'):
     """
-    Gregory is a dank memer :sunglasses:
+    Gregory likes to uwu :3
     """
     def __init__(self, client):
         self.client = client
